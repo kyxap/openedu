@@ -1,4 +1,4 @@
-import algo1.Solution5SecretSwap2;
+import algo1.week1.Solution5SecretSwap2;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

@@ -1,4 +1,4 @@
-package algo1;
+package algo1.week1;
 
 import java.io.BufferedWriter;
 import java.io.IOException;

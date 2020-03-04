@@ -1,4 +1,4 @@
-package algo1;
+package algo1.week1;
 
 import java.io.BufferedWriter;
 import java.nio.file.Files;
@@ -55,7 +55,7 @@ public class Solution5SecretSwap2 {
         writer.close();
     }
 
-    static int binarySearch(int[] ar, int high, int val) throws Exception {
+    public static int binarySearch(int[] ar, int high, int val) throws Exception {
         int low = 0;
         while (low <= high) {
             int mid = (low + high) / 2;
