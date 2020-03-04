@@ -1,0 +1,13 @@
+*.iml
+/.idea
+/build
+/build-transient-src
+/dist
+/node_modules
+/npm-debug.log
+/.gradle
+/out
+.idea
+
+.DS_Store
+
