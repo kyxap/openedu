@@ -8,6 +8,6 @@
 /.gradle
 /out
 .idea
-
+output.txt
 .DS_Store
 

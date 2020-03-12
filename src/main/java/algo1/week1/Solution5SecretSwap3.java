@@ -11,46 +11,22 @@ public class Solution5SecretSwap3 {
 
     private static BufferedWriter writer;
 
-    public static void main(String[] args) throws Exception {
+    public static void main(final String[] args) throws Exception {
 
         writer = Files.newBufferedWriter(Paths.get("output.txt"));
-        List<String> stream = Files.readAllLines(Paths.get("input.txt"));
+        final List<String> stream = Files.readAllLines(Paths.get("input.txt"));
 
         for (int streamIndex = 0; streamIndex < stream.size(); streamIndex = +2) {
-            int size = Integer.parseInt(stream.get(streamIndex));
+            final int size = Integer.parseInt(stream.get(streamIndex));
             int[] ar = Arrays.stream(stream.get(streamIndex + 1).split(" "))
                     .mapToInt(Integer::parseInt)
                     .toArray();
 
             ar = quicksort(ar, 0, size - 1);
-//            for (int j = 1; j < size; j++) {
-//                int i = j - 1;
-//
-//                while (i < ar.length -1 && ar[i] > ar[i + 1]) {
-////                    int tmp = ar[i];
-////                    int toMove = ar[i + 1];
-//
-//                    int newIndex = binarySearch(ar, j, ar[i + 1]);
-//
-//                    for (int z = i + 1; z-1 >= newIndex; z--) {
-//                        int t = ar[z-1];
-//                        ar[z-1] = ar[z];
-//                        ar[z] = t;
-//
-//                        if (z != newIndex) writer.write(String.format("Swap elements at indices %d and %d.\n", z , z +1));
-//
-//                    }
-//
-////                    ar[i] = ar[i + 1];
-////                    ar[i + 1] = tmp;
-////                    j++;
-//                    i++;
-//                }
-//            }
 
             // print int to file from array
             writer.write("No more swaps needed.\n");
-            for (int a : ar) {
+            for (final int a : ar) {
                 writer.write(String.valueOf(a));
                 writer.append(" ");
             }
@@ -59,10 +35,10 @@ public class Solution5SecretSwap3 {
         writer.close();
     }
 
-    private static int[] quicksort(int[] numbers, int low, int high) {
+    public static int[] quicksort(final int[] numbers, final int low, final int high) {
         int i = low, j = high;
         // Get the pivot element from the middle of the list
-        int pivot = numbers[low + (high-low)/2];
+        final int pivot = numbers[low + (high-low)/2];
 
         // Divide into two lists
         while (i <= j) {
@@ -97,14 +73,14 @@ public class Solution5SecretSwap3 {
         return numbers;
     }
 
-    private static int[] exchange(int[] numbers, int i, int j) {
-        int temp = numbers[i];
+    private static int[] exchange(final int[] numbers, final int i, final int j) {
+        final int temp = numbers[i];
         numbers[i] = numbers[j];
         numbers[j] = temp;
 
         try {
             if (i < j) writer.write(String.format("Swap elements at indices %d and %d.\n", i + 1, j + 1));
-        } catch (IOException e) {
+        } catch (final IOException e) {
 //            log.warn("", e);
 
         }
@@ -112,10 +88,10 @@ public class Solution5SecretSwap3 {
         return numbers;
     }
 
-    static int binarySearch(int[] ar, int high, int val) throws Exception {
+    static int binarySearch(final int[] ar, int high, final int val) throws Exception {
         int low = 0;
         while (low <= high) {
-            int mid = (low + high) / 2;
+            final int mid = (low + high) / 2;
 
             if (ar[mid] < val) {
                 if (mid == high) {

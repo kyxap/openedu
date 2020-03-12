@@ -1,3 +1,5 @@
+package week1;
+
 import algo1.week1.Solution5SecretSwap2;
 import org.junit.Test;
 
