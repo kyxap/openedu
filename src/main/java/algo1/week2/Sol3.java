@@ -5,31 +5,41 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayDeque;
 import java.util.Arrays;
+import java.util.Deque;
 import java.util.List;
 
 public class Sol3 {
 
-    private static BufferedWriter writer;
-    static BigInteger inv = BigInteger.valueOf(0);
-    static int[] rez = null;
+    static Deque<Integer> deque = new ArrayDeque<>();
+    public static BufferedWriter writer;
+    public static BigInteger inv = BigInteger.valueOf(0);
+    public static int[] rez = null;
 
-    /**
-     * Число инверсий
-     */
+    public static String out = "output.txt";
+    public static String in = "input.txt";
+
     public static void main(final String[] args) throws Exception {
 
-        writer = Files.newBufferedWriter(Paths.get("output.txt"));
-        final List<String> stream = Files.readAllLines(Paths.get("input.txt"));
+        final String path = "txt/w2/sol3/";
+
+        if (Files.exists(Paths.get(path))) {
+            out = path + out;
+            in =  path + in;
+        }
+
+        writer = Files.newBufferedWriter(Paths.get(out));
+        final List<String> stream = Files.readAllLines(Paths.get(in));
 
         final int n = Integer.parseInt(stream.get(0));
         rez = new int[n];
         final int plus1 = 1;
         for (int i = 0; i < n; i++) {
             rez[i] = i + plus1;
+            deque.push(i + plus1);
         }
-        quicksort(rez, 0, rez.length - 1);
-
+        aquicksort(rez, 0, rez.length - 1);
 
         for (final int a : rez) {
             writer.write(String.valueOf(a));
@@ -40,22 +50,81 @@ public class Sol3 {
         writer.close();
     }
 
-    static void antiq(final int n) {
-        final int mid = n/2;
-//        //swap
-//        for (int i = 0; i < n; i++) {
-//            final int tmp = rez.get(mid);
-//            rez.set(mid, rez.get(rez.size() - 1));
-//            rez.set(rez.size() -1, tmp);
-//        }
 
+    public static int[] aquicksort2(final int[] numbers, final int left, final int right) {
+        int i = left, j = right;
+        // Get the pivot element from the middle of the list
+        final int pivot = numbers[(right + left) / 2];
+
+        // Divide into two lists
+        while (i <= j) {
+            // If the current value from the left list is smaller than the pivot
+            // element then get the next element from the left list
+            while (numbers[i] < pivot) {
+                i++;
+            }
+            // If the current value from the right list is larger than the pivot
+            // element then get the next element from the right list
+            while (numbers[j] < pivot) {
+                j--;
+            }
+
+            // If we have found a value in the left list which is larger than
+            // the pivot element and if we have found a value in the right list
+            // which is smaller than the pivot element then we exchange the
+            // values.
+            // As we are done we can increase i and j
+            if (i <= j) {
+                exchange(numbers, i, j);
+                i++;
+                j--;
+            }
+        }
+        // Recursion
+        if (left < j)
+            aquicksort2(numbers, left, j);
+        if (i < right)
+            aquicksort2(numbers, i, right);
+
+        return numbers;
+    }
+
+    public static int[] aquicksort(final int[] numbers, final int low, final int high) {
+        if (high - low == 1) {
+            numbers[low] = deque.pollFirst();
+            numbers[high] = deque.pollLast();
+
+            return numbers;
+        }
+        final int pivotIndex = (low + high) / 2;
+        numbers[pivotIndex] = deque.pollFirst();
+
+        for (int index = low; index < pivotIndex; index++) {
+            if (deque.size() > 1 && index > low) {
+                final int tmp = deque.pollFirst();
+                numbers[index] = deque.pollFirst();
+                deque.push(tmp);
+
+            } else {
+                numbers[index] = deque.pollLast();
+            }
+
+//            numbers[index] = deque.pollLast();
+
+        }
+
+
+        if (pivotIndex + 1 < numbers.length)
+            aquicksort(numbers, pivotIndex + 1, high);
+
+        return numbers;
     }
 
 
-    public static int[] quicksort(final int[] numbers, final int low, final int high) {
-        int i = low, j = high;
+    public static int[] quicksort(final int[] numbers, final int left, final int right) {
+        int i = left, j = right;
         // Get the pivot element from the middle of the list
-        final int pivot = numbers[low + (high-low)/2];
+        final int pivot = numbers[(right + left) / 2];
 
         // Divide into two lists
         while (i <= j) {
@@ -82,10 +151,10 @@ public class Sol3 {
             }
         }
         // Recursion
-        if (low < j)
-            quicksort(numbers, low, j);
-        if (i < high)
-            quicksort(numbers, i, high);
+        if (left < j)
+            quicksort(numbers, left, j);
+        if (i < right)
+            quicksort(numbers, i, right);
 
         return numbers;
     }
@@ -97,21 +166,6 @@ public class Sol3 {
 
         return numbers;
     }
-
-//    private static int[] exchange(final int[] numbers, final int i, final int j) {
-//        final int temp = numbers[i];
-//        numbers[i] = numbers[j];
-//        numbers[j] = temp;
-//
-////        try {
-////            if (i < j) writer.write(String.format("Swap elements at indices %d and %d.\n", i + 1, j + 1));
-////        } catch (final IOException e) {
-//////            log.warn("", e);
-////
-////        }
-//
-//        return numbers;
-//    }
 
     public static int[] mergeSort(final int[] ar, final int offset) throws IOException {
         final int n = ar.length;
