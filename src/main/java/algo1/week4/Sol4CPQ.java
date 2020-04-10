@@ -3,14 +3,12 @@ package algo1.week4;
 import java.io.BufferedWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
-public class Sol4v2 {
+public class Sol4CPQ {
 
     public static BufferedWriter writer;
 
@@ -19,7 +17,8 @@ public class Sol4v2 {
 
     /**
      * Очередь с минимумом
-     * 6 tests passed only
+     * 38 test passed (
+     *
      */
     public static void main(final String[] args) throws Exception {
 
@@ -35,8 +34,7 @@ public class Sol4v2 {
         final int size = Integer.parseInt(stream.get(0));
 
         final Queue<Integer> queue = new LinkedList<>();
-        final PriorityQueue<Integer> pq = new PriorityQueue<>();
-        final Map<Integer, Integer> map = new HashMap<>();
+        final CPQ<Integer> pq = new CPQ<>();
 
         for (int i = 1; i <= size; i++) {
             final String cmd = stream.get(i);
@@ -45,27 +43,28 @@ public class Sol4v2 {
                 queue.offer(a);
                 pq.offer(a);
             } else if (cmd.charAt(0) == '?') {
-                final int el = pq.peek();
-                if (map.get(el) != null) {
-                    final int count = map.get(el);
-                    map.remove(pq.peek());
-                    for (int x = 0; x < count; x++) {
-                        if (el != pq.poll()) {
-                            throw new Exception("LOL");
-                        }
-                    }
-                }
                 writer.write(String.valueOf(pq.peek()));
                 writer.newLine();
             } else { // supposed to be -
                 final int el = queue.poll();
-                map.put(el, map.getOrDefault(el, 0) + 1);
-//                pq.remove(el);
+                pq.remove(el);
             }
 
         }
 
         writer.close();
+    }
+
+    public static class CPQ<I extends Number> extends PriorityQueue {
+        @Override
+        public boolean remove(final Object o) {
+            return super.remove(o);
+        }
+
+        @Override
+        public boolean offer(final Object o) {
+            return super.offer(o);
+        }
     }
 }
 
